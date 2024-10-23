@@ -2,7 +2,9 @@
 //package:shared_preferences/shared_preferences.dart
 
 import 'package:flutter/material.dart';
-import 'screens/login_screen.dart';
+//import 'screens/login_screen.dart';
+import 'package:onisapp/Sreens/login_screen.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -17,6 +19,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: LoginScreen(), // Define tela inicial
+      //home: LoginScreen(), // Define tela inicial
+      //home: HomeScreen(),
+
     );
   }
 }
