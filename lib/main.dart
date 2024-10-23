@@ -1,27 +1,19 @@
 import 'package:flutter/material.dart';
-//package:shared_preferences/shared_preferences.dart
-
+import 'screens/login_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp ({Key? key}) : super(key: key);
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Onis',
+      title: 'Login e Cadastro',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Container(
-        color: Colors.white , 
-        child: Container(
-          color: Colors.blue,),),
+      home: LoginScreen(), // Define tela inicial
     );
-  
   }
 }
