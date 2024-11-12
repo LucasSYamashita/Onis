@@ -12,7 +12,7 @@ class PqScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pratos Quentes'),
+        title: Text('Prato Principal'),
       ),
       body: BackgroundContainer(
         child: ListView.builder(

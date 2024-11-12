@@ -20,22 +20,18 @@ class BebidasScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             final bebida = bebidas[index];
             return Card(
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.blue.withOpacity(0.8),
               margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue.withOpacity(0.9),
-                  padding: EdgeInsets.all(16),
-                ),
-                onPressed: () {
-                  // Lógica ao pressionar o botão
-                },
+               child:Padding(
+                  padding: const EdgeInsets.all(16),
+                  
+
                 child: ListTile(
                 title: Text(bebida.nome, style: TextStyle(fontWeight: FontWeight.bold)),
                 subtitle: Text(bebida.descricao),
                 trailing: Text('R\$ ${bebida.preco.toStringAsFixed(2)}'),
                 ),
-              ),
+               ),
             );
           },
         ),

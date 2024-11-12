@@ -3,10 +3,10 @@ import '../models/item_cardapio.dart';
 class SobremesasController {
   List<ItemCardapio> getItems() {
     return [
-      ItemCardapio(nome: 'Suco de Laranja', descricao: 'Natural e refrescante', preco: 5.00),
-      ItemCardapio(nome: 'Refrigerante', descricao: 'Lata de 350ml', preco: 4.00),
-      ItemCardapio(nome: 'Água Mineral', descricao: 'Sem gás', preco: 2.50),
-      ItemCardapio(nome: 'Chá Gelado', descricao: 'Sabor limão', preco: 3.50),
+      ItemCardapio(nome: 'bolo prestigio', descricao: 'Bolo de chocolate com recheio de cocada', preco: 10.00),
+      ItemCardapio(nome: 'pudin', descricao: 'pudin de leite com caramelo', preco: 10.00),
+      ItemCardapio(nome: 'sorvete', descricao: 'sorvete de creme com calda de morango', preco: 15.00),
+      ItemCardapio(nome: 'salada de fruta', descricao: 'frutas marinadas em suco de laranja', preco: 5.00),
       // Adicione mais itens conforme necessário
     ];
   }
