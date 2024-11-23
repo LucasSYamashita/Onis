@@ -1,8 +1,7 @@
-// views/screens/confirmacao_pedido_screen.dart
 import 'package:flutter/material.dart';
-import 'package:onisapp/views/widgets/background_container.dart';
-import '../../models/item_cardapio.dart';
 import '../../controllers/pedido_controller.dart';
+import '../../models/item_cardapio.dart';
+import '../widgets/background_container.dart';
 
 class ConfirmacaoPedidoScreen extends StatelessWidget {
   final PedidoController _pedidoController = PedidoController();
@@ -24,29 +23,43 @@ class ConfirmacaoPedidoScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: ListView.builder(
-                  itemCount: pedidoAtual.length,
-                  itemBuilder: (context, index) {
-                    final item = pedidoAtual[index];
-                    return Card(
-                      color: Colors.white.withOpacity(0.8),
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      child: ListTile(
-                        title: Text(item.nome, style: TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Text(item.descricao),
-                        trailing: Text('R\$ ${item.preco.toStringAsFixed(2)}'),
-                        onTap: () {
-                          _mostrarDetalhesDoItem(context, item);
+                child: pedidoAtual.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: pedidoAtual.length,
+                        itemBuilder: (context, index) {
+                          final item = pedidoAtual[index];
+                          return Card(
+                            color: Colors.white.withOpacity(0.8),
+                            margin: const EdgeInsets.symmetric(vertical: 8),
+                            child: ListTile(
+                              title: Text(
+                                '${item.quantidade}x ${item.nome}',
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                  'Preço unitário: R\$ ${item.preco.toStringAsFixed(2)}'),
+                              trailing: Text(
+                                'Total: R\$ ${(item.quantidade * item.preco).toStringAsFixed(2)}',
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              onTap: () {
+                                _mostrarDetalhesDoItem(context, item);
+                              },
+                            ),
+                          );
                         },
+                      )
+                    : const Center(
+                        child: Text(
+                          'Nenhum item no pedido.',
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
-                    );
-                  },
-                ),
               ),
               const SizedBox(height: 20),
               Text(
-                'Total: R\$ ${_pedidoController.calcularTotal().toStringAsFixed(2)}',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                'Total Geral: R\$ ${_pedidoController.calcularTotal().toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               Row(
@@ -85,24 +98,19 @@ class ConfirmacaoPedidoScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(item.descricao),
-              SizedBox(height: 10),
-              Text('Preço: R\$ ${item.preco.toStringAsFixed(2)}'),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      _pedidoController.removerItem(item);
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Item removido do pedido')),
-                      );
-                    },
-                    child: const Text('Remover Item'),
-                  ),
-                ],
+              Text('Quantidade: ${item.quantidade}'),
+              Text('Preço unitário: R\$ ${item.preco.toStringAsFixed(2)}'),
+              Text('Total: R\$ ${(item.quantidade * item.preco).toStringAsFixed(2)}'),
+              const SizedBox(height: 10),
+              TextButton(
+                onPressed: () {
+                  _pedidoController.removerItem(item);
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('${item.nome} removido do pedido')),
+                  );
+                },
+                child: const Text('Remover Item'),
               ),
             ],
           ),
@@ -120,18 +128,18 @@ class ConfirmacaoPedidoScreen extends StatelessWidget {
   }
 
   void _confirmarPedido(BuildContext context) {
-    // Aqui você pode adicionar lógica para salvar o pedido ou enviá-lo para o backend
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Pedido confirmado com sucesso!')),
     );
     Navigator.pop(context); // Retorna para a tela anterior
   }
 
-  void _cancelarPedido(BuildContext context) {
-    _pedidoController.limparPedido(); // Limpa os itens do pedido
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Pedido cancelado.')),
-    );
-    Navigator.pop(context); // Retorna para a tela anterior
-  }
+   void _cancelarPedido(BuildContext context) {
+     _pedidoController.limparPedido(); // Limpa os itens do pedido
+     ScaffoldMessenger.of(context).showSnackBar(
+       const SnackBar(content: Text('Pedido cancelado.')),
+     );
+     Navigator.pop(context); // Retorna para a tela anterior
+   }
+
 }

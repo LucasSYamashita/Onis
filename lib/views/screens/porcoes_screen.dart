@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:onisapp/views/widgets/background_container.dart';
 import '../../controllers/porcoes_controller.dart';
 import '../../models/item_cardapio.dart';
+import '../../controllers/pedido_controller.dart';
 
-class PorcoesScreen extends StatelessWidget {
+class PorcoesScreen extends StatefulWidget {
+  @override
+  _PorcoesScreenState createState() => _PorcoesScreenState();
+}
+
+class _PorcoesScreenState extends State<PorcoesScreen> {
   final PorcoesController _controller = PorcoesController();
+  final PedidoController _pedidoController = PedidoController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +51,8 @@ class PorcoesScreen extends StatelessWidget {
   }
 
   void _mostrarDetalhesDaPorcao(BuildContext context, ItemCardapio porcoe) {
+    int quantidade = 1;
+
     showDialog(
       context: context,
       builder: (context) {
@@ -58,23 +67,45 @@ class PorcoesScreen extends StatelessWidget {
               Text('Preço: R\$ ${porcoe.preco.toStringAsFixed(2)}'),
               const SizedBox(height: 10),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  TextButton(
+                  const Text('Quantidade: '),
+                  IconButton(
+                    icon: const Icon(Icons.remove),
                     onPressed: () {
-                      // Lógica para remover o item ou outras ações
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Item removido da lista')),
-                      );
-                      Navigator.pop(context); // Fecha o dialog
+                      if (quantidade > 1) {
+                        setState(() {
+                          quantidade--;
+                        });
+                      }
                     },
-                    child: const Text('Remover Item'),
+                  ),
+                  Text('$quantidade'),
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () {
+                      setState(() {
+                        quantidade++;
+                      });
+                    },
                   ),
                 ],
               ),
             ],
           ),
           actions: [
+            TextButton(
+              onPressed: () {
+                // Adicionar o item ao pedido com a quantidade selecionada
+                porcoe.quantidade = quantidade;
+                _pedidoController.adicionarItem(porcoe);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('${porcoe.nome} adicionado ao pedido')),
+                );
+                Navigator.pop(context); // Fecha o dialog
+              },
+              child: const Text('Adicionar ao Pedido'),
+            ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // Fecha o dialog

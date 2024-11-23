@@ -1,14 +1,19 @@
-// controllers/bebidas_controller.dart
 import '../models/item_cardapio.dart';
 
 class PfController {
+  final List<ItemCardapio> _pratosFrios = [
+    ItemCardapio(nome: 'Salada de Frango', descricao: 'Frango desfiado com maionese e legumes', preco: 12.00),
+    ItemCardapio(nome: 'Tabule', descricao: 'Salada de trigo com tomate, pepino e hortelã', preco: 8.00),
+    ItemCardapio(nome: 'Sushi', descricao: 'Sushi com peixe fresco', preco: 25.00),
+    ItemCardapio(nome: 'Carpaccio', descricao: 'Carne bovina crua cortada finamente com molho de mostarda', preco: 18.00),
+  ];
+
   List<ItemCardapio> getItems() {
-    return [
-      ItemCardapio(nome: 'Salada de Batata com Maionese', descricao: 'Batatas cozidas e maionese. Aproximadamente 450g', preco: 25.00),
-      ItemCardapio(nome: 'Salada de Macarrão', descricao: 'Macarrão parafuzo, maionese, presunto e queijo. Aproximadamente 450g', preco: 25.00),
-      ItemCardapio(nome: 'Rolinho de Alface com Peito de Peru', descricao: 'Alface, presunto, queijo, cenoura. 6 unidades', preco: 15.00),
-      ItemCardapio(nome: 'Guacamole', descricao: 'Abacate, cebola, tomate e pimenta. Aproximadamente 300g', preco: 30.00),
-      // Adicione mais itens conforme necessário
-    ];
+    return _pratosFrios;
+  }
+
+  void atualizarQuantidade(ItemCardapio pratoFrios, int delta) {
+    pratoFrios.quantidade += delta;
+    if (pratoFrios.quantidade < 0) pratoFrios.quantidade = 0;
   }
 }

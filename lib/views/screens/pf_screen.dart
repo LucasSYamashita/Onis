@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:onisapp/views/widgets/background_container.dart';
 import '../../controllers/pf_controller.dart';
 import '../../models/item_cardapio.dart';
+import '../../controllers/pedido_controller.dart';
 
-class PfScreen extends StatelessWidget {
+class PfScreen extends StatefulWidget {
+  @override
+  _PfScreenState createState() => _PfScreenState();
+}
+
+class _PfScreenState extends State<PfScreen> {
   final PfController _controller = PfController();
+  final PedidoController _pedidoController = PedidoController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +49,8 @@ class PfScreen extends StatelessWidget {
   }
 
   void _mostrarDetalhesDoItem(BuildContext context, ItemCardapio pratosfrio) {
+    int quantidade = 1;
+
     showDialog(
       context: context,
       builder: (context) {
@@ -54,12 +63,50 @@ class PfScreen extends StatelessWidget {
               Text(pratosfrio.descricao),
               const SizedBox(height: 10),
               Text('Preço: R\$ ${pratosfrio.preco.toStringAsFixed(2)}'),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  const Text('Quantidade: '),
+                  IconButton(
+                    icon: const Icon(Icons.remove),
+                    onPressed: () {
+                      if (quantidade > 1) {
+                        setState(() {
+                          quantidade--;
+                        });
+                      }
+                    },
+                  ),
+                  Text('$quantidade'),
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () {
+                      setState(() {
+                        quantidade++;
+                      });
+                    },
+                  ),
+                ],
+              ),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Fecha o diálogo
+                // Adicionar o item ao pedido com a quantidade selecionada
+                pratosfrio.quantidade = quantidade;
+                _pedidoController.adicionarItem(pratosfrio);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('${pratosfrio.nome} adicionado ao pedido')),
+                );
+                Navigator.pop(context); // Fecha o dialog
+              },
+              child: const Text('Adicionar ao Pedido'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Fecha o dialog
               },
               child: const Text('Fechar'),
             ),
